@@ -25,7 +25,7 @@ class OfferControllerITSpec extends WordSpec with Matchers with GuiceOneAppPerTe
       val Some(result) = route(app, request)
       status(result) shouldBe CREATED
 
-      parse(contentAsString(result)).flatMap(_.as[CreateOfferResponse]) shouldBe Right(CreateOfferResponse(offer))
+      parse(contentAsString(result)).flatMap(_.as[CreateOfferResponse].map(_.offerWithId.offer)) shouldBe Right(offer)
 
     }
   }

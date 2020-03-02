@@ -1,7 +1,7 @@
 package models
 
-import models.Offers.Offer
+import models.Offers.{Offer, OfferWithId}
 
 object Responses {
-  case class CreateOfferResponse(offer: Offer)
+  case class CreateOfferResponse(offerWithId: OfferWithId)
 }
