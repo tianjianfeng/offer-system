@@ -19,3 +19,4 @@ libraryDependencies ++= Seq(
 ).map(_ % circeVersion)
 
 libraryDependencies += "com.dripower" %% "play-circe" % "2812.0"
+libraryDependencies += "org.mockito" % "mockito-core" % "3.3.0" % Test
