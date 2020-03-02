@@ -44,6 +44,23 @@ class OfferControllerSpec extends WordSpec with Matchers with GuiceOneAppPerTest
       status(createdOffer) shouldBe CREATED
     }
 
+    "Call to create an offer with invalid expireDate" in new TestUtils {
+
+      val offerId = OfferId(UUID.randomUUID())
+      val offer = Offer("xyz", Product("abc"), Instant.now.minus(1, ChronoUnit.SECONDS))
+      val payload = offer.asJson.toString
+      val request = FakeRequest(POST, "/offers").withHeaders(Headers(("Content-Type", "application/json"))).withBody(payload)
+
+      val offerWithId = OfferWithId(offerId, offer)
+
+      val controller = new OfferController(stubControllerComponents(), offerService)
+
+      val createdOffer = call(controller.create, request)
+
+      status(createdOffer) shouldBe BAD_REQUEST
+      parse(contentAsString(createdOffer)).flatMap(_.as[CreateOfferClientErrorResponse]) shouldBe Right(CreateOfferClientErrorResponse(offer = offer))
+    }
+
     "Call to create an offer but repo failed to add it" in new TestUtils {
 
       val offerId = OfferId(UUID.randomUUID())

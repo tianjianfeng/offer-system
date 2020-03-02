@@ -1,2 +1,3 @@
 POST        /offers                     controllers.OfferController.create
 GET         /offers/:offerId            controllers.OfferController.get(offerId: java.util.UUID)
+DELETE      /offers/:offerId            controllers.OfferController.remove(offerId: java.util.UUID)
