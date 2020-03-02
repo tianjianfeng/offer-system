@@ -11,4 +11,5 @@ object Responses {
   case class CreateOfferFailureResponse(msg: String = "Failed to create an offer", offer: Offer) extends OfferResponse
   case class FoundOfferResponse(msg: String = "An offer is found", offerWithId: OfferWithId) extends OfferResponse
   case class OfferNotFoundResponse(msg: String = "The offer could not be found", offerId: OfferId) extends OfferResponse
+  case class RemoveOfferResponse (msg: String = "The offer is removed", offerWithId: OfferWithId) extends OfferResponse
 }

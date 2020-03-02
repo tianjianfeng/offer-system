@@ -13,7 +13,7 @@ trait OfferRepo {
 
   def addOffer(offer: Offer): Future[Option[OfferWithId]]
   def getOffer(offerId: OfferId): Future[Option[OfferWithId]]
-
+  def removeOffer(offerId: OfferId): Future[Option[OfferWithId]]
 
 }
 
@@ -27,4 +27,5 @@ class OfferRepoImpl @Inject() (offers: TrieMap[OfferId, Offer] =  TrieMap[OfferI
 
   def getOffer(offerId: OfferId): Future[Option[OfferWithId]] = Future.successful(offers.get(offerId) map (OfferWithId(offerId, _)))
 
+  def removeOffer(offerId: OfferId): Future[Option[OfferWithId]] = Future.successful(offers.remove(offerId) map(OfferWithId(offerId, _)))
 }

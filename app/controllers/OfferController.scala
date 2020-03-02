@@ -7,7 +7,7 @@ import io.circe.generic.auto._
 import io.circe.syntax._
 import javax.inject.Inject
 import models.Offers.{Offer, OfferId}
-import models.Responses.{CreateOfferFailureResponse, CreateOfferResponse, FoundOfferResponse, OfferNotFoundResponse}
+import models.Responses._
 import play.api.libs.circe.Circe
 import play.api.mvc._
 import services.OfferService
@@ -32,6 +32,13 @@ class OfferController @Inject()(val cc: ControllerComponents, offerService: Offe
         if (offerWithId.offer.expireDate.compareTo(Instant.now) < 0) NotFound(OfferNotFoundResponse(offerId = OfferId(offerId)).asJson)
         else Ok(FoundOfferResponse(offerWithId = offerWithId).asJson)
       }
+    }
+  }
+
+  def remove(offerId: UUID) = Action.async { implicit  request =>
+    offerService.removeOffer(OfferId(offerId)) map {
+      case None => NotFound(OfferNotFoundResponse(offerId = OfferId(offerId)).asJson)
+      case Some(offerWithId) => Ok(RemoveOfferResponse(offerWithId = offerWithId).asJson)
     }
   }
 
