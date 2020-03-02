@@ -1,7 +1,10 @@
 package controllers
 
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+
 import akka.stream.Materializer
-import models.Offers.Offer
+import models.Offers.{Offer, Product}
 import org.scalatest.{EitherValues, Matchers, WordSpec}
 import org.scalatestplus.play.guice._
 import play.api.mvc.Headers
@@ -19,7 +22,7 @@ class OfferControllerITSpec extends WordSpec with Matchers with GuiceOneAppPerTe
 
   "OfferController" should {
     "create an offer" in  {
-      val offer = Offer(description = "abc")
+      val offer = Offer(description = "abc", product = Product("xyz"), expireDate = Instant.now.plus(5, ChronoUnit.DAYS))
       val payload = offer.asJson.toString
       val request = FakeRequest(POST, "/offers").withHeaders(Headers(("Content-Type", "application/json"))).withBody(payload)
       val Some(result) = route(app, request)
