@@ -28,7 +28,7 @@ class OfferControllerSpec extends WordSpec with Matchers with GuiceOneAppPerTest
     "Call to create an offer successfully" in new TestUtils {
 
       val offerId = OfferId(UUID.randomUUID())
-      val offer = Offer("xyz", Product("abc"), Instant.now.plus(5, ChronoUnit.DAYS))
+      val offer = Offer("xyz", Product("abc"), Instant.now.plus(5, ChronoUnit.DAYS), 2.0f)
       val payload = offer.asJson.toString
       val request = FakeRequest(POST, "/offers").withHeaders(Headers(("Content-Type", "application/json"))).withBody(payload)
 
@@ -47,7 +47,7 @@ class OfferControllerSpec extends WordSpec with Matchers with GuiceOneAppPerTest
     "Call to create an offer with invalid expireDate" in new TestUtils {
 
       val offerId = OfferId(UUID.randomUUID())
-      val offer = Offer("xyz", Product("abc"), Instant.now.minus(1, ChronoUnit.SECONDS))
+      val offer = Offer("xyz", Product("abc"), Instant.now.minus(1, ChronoUnit.SECONDS), 2.0f)
       val payload = offer.asJson.toString
       val request = FakeRequest(POST, "/offers").withHeaders(Headers(("Content-Type", "application/json"))).withBody(payload)
 
@@ -64,7 +64,7 @@ class OfferControllerSpec extends WordSpec with Matchers with GuiceOneAppPerTest
     "Call to create an offer but repo failed to add it" in new TestUtils {
 
       val offerId = OfferId(UUID.randomUUID())
-      val offer = Offer("xyz", Product("abc"), Instant.now.plus(5, ChronoUnit.DAYS))
+      val offer = Offer("xyz", Product("abc"), Instant.now.plus(5, ChronoUnit.DAYS), 2.0f)
       val payload = offer.asJson.toString
       val request = FakeRequest(POST, "/offers").withHeaders(Headers(("Content-Type", "application/json"))).withBody(payload)
 
@@ -82,7 +82,7 @@ class OfferControllerSpec extends WordSpec with Matchers with GuiceOneAppPerTest
 
     "Call to get an offer and find it" in new TestUtils {
       val offerId = UUID.randomUUID()
-      val offer = Offer("xyz", Product("abc"), Instant.now.plus(5, ChronoUnit.DAYS))
+      val offer = Offer("xyz", Product("abc"), Instant.now.plus(5, ChronoUnit.DAYS), 2.0f)
       val offerWithId = OfferWithId(OfferId(offerId), offer)
 
       when(offerService.getOffer(OfferId(offerId))).thenReturn(Future.successful(Some(OfferWithId(OfferId(offerId), offer))))
@@ -98,7 +98,7 @@ class OfferControllerSpec extends WordSpec with Matchers with GuiceOneAppPerTest
 
     "Call to get an offer but not found" in new TestUtils {
       val offerId = UUID.randomUUID()
-      val offer = Offer("xyz", Product("abc"), Instant.now.plus(5, ChronoUnit.DAYS))
+      val offer = Offer("xyz", Product("abc"), Instant.now.plus(5, ChronoUnit.DAYS), 2.0f)
       val offerWithId = OfferWithId(OfferId(offerId), offer)
 
       when(offerService.getOffer(OfferId(offerId))).thenReturn(Future.successful(None))
@@ -114,7 +114,7 @@ class OfferControllerSpec extends WordSpec with Matchers with GuiceOneAppPerTest
 
     "Call to get an offer but expired" in new TestUtils {
       val offerId = UUID.randomUUID()
-      val offer = Offer("xyz", Product("abc"), Instant.now.minus(1, ChronoUnit.SECONDS))
+      val offer = Offer("xyz", Product("abc"), Instant.now.minus(1, ChronoUnit.SECONDS), 2.0f)
       val offerWithId = OfferWithId(OfferId(offerId), offer)
 
       when(offerService.getOffer(OfferId(offerId))).thenReturn(Future.successful(Some(OfferWithId(OfferId(offerId), offer))))
@@ -130,7 +130,7 @@ class OfferControllerSpec extends WordSpec with Matchers with GuiceOneAppPerTest
 
     "Call remove an offer but not found" in new TestUtils {
       val offerId = UUID.randomUUID()
-      val offer = Offer("xyz", Product("abc"), Instant.now.minus(1, ChronoUnit.SECONDS))
+      val offer = Offer("xyz", Product("abc"), Instant.now.minus(1, ChronoUnit.SECONDS), 2.0f)
       val offerWithId = OfferWithId(OfferId(offerId), offer)
 
 

@@ -22,7 +22,7 @@ class OfferControllerITSpec extends WordSpec with Matchers with GuiceOneAppPerTe
 
   "OfferController" should {
     "an offer lifecycle" in  {
-      val offer = Offer(description = "abc", product = Product("xyz"), expireDate = Instant.now.plus(5, ChronoUnit.DAYS))
+      val offer = Offer(description = "abc", product = Product("xyz"), expireDate = Instant.now.plus(5, ChronoUnit.DAYS), 2.0f)
       val payload = offer.asJson.toString
 
       // create an offer

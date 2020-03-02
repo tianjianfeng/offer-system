@@ -12,7 +12,7 @@ class OfferRepoSpec extends WordSpec with OptionValues with ScalaFutures with Ma
   "OfferRepo" should {
     "contains the newly added offer" in {
 
-      val newOffer = Offer("lmn", Product("xyz"), Instant.now().plus(5, ChronoUnit.DAYS))
+      val newOffer = Offer("lmn", Product("xyz"), Instant.now().plus(5, ChronoUnit.DAYS), 2.0f)
       val offerRepo = new OfferRepoImpl()
       val Some(addedOffer) = offerRepo.addOffer(newOffer).futureValue
       addedOffer.offer shouldBe newOffer
