@@ -1,10 +1,13 @@
 package controllers
 
+import java.time.Instant
+import java.util.UUID
+
 import io.circe.generic.auto._
 import io.circe.syntax._
 import javax.inject.Inject
-import models.Offers.Offer
-import models.Responses.{CreateOfferFailureResponse, CreateOfferResponse}
+import models.Offers.{Offer, OfferId}
+import models.Responses.{CreateOfferFailureResponse, CreateOfferResponse, FoundOfferResponse, OfferNotFoundResponse}
 import play.api.libs.circe.Circe
 import play.api.mvc._
 import services.OfferService
@@ -19,6 +22,16 @@ class OfferController @Inject()(val cc: ControllerComponents, offerService: Offe
     offerService.addOffer(offer) map {
       case None => InternalServerError(CreateOfferFailureResponse(offer = offer).asJson)
       case Some(retrievedOfferWithId) => Created(CreateOfferResponse(offerWithId = retrievedOfferWithId).asJson)
+    }
+  }
+
+  def get(offerId: UUID) = Action.async { implicit  request =>
+    offerService.getOffer(OfferId(offerId)) map {
+      case None => NotFound(OfferNotFoundResponse(offerId = OfferId(offerId)).asJson)
+      case Some(offerWithId) => {
+        if (offerWithId.offer.expireDate.compareTo(Instant.now) < 0) NotFound(OfferNotFoundResponse(offerId = OfferId(offerId)).asJson)
+        else Ok(FoundOfferResponse(offerWithId = offerWithId).asJson)
+      }
     }
   }
 

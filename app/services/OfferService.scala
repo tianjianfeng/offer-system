@@ -9,10 +9,13 @@ import scala.concurrent.Future
 trait OfferService {
 
   def addOffer(offer: Offer): Future[Option[OfferWithId]]
+  def getOffer(offerId: OfferId): Future[Option[OfferWithId]]
 }
 
 class OfferServiceImpl @Inject()(offerRepo: OfferRepo) extends OfferService {
 
   def addOffer(offer: Offer): Future[Option[OfferWithId]] = offerRepo.addOffer(offer)
+
+  def getOffer(offerId: OfferId): Future[Option[OfferWithId]] = offerRepo.getOffer(offerId)
 
 }

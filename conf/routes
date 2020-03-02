@@ -1,1 +1,2 @@
 POST        /offers                     controllers.OfferController.create
+GET         /offers/:offerId            controllers.OfferController.get(offerId: java.util.UUID)
