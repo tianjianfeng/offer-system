@@ -8,6 +8,8 @@ The OfferRepoImpl is implemented using map for simplicity. But in reality, it co
 
 The OfferService layer works as the business logic layer, but for this implementation it only proxy through the repo calls.
 
+The system only allow to create an offer which expireDate has to be more than 0.5 days and beyond
+
 ## Test
 
 ```bash

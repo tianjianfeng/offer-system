@@ -28,7 +28,7 @@ class OfferControllerSpec extends WordSpec with Matchers with GuiceOneAppPerTest
     "Call to create an offer successfully" in new TestUtils {
 
       val offerId = OfferId(UUID.randomUUID())
-      val offer = Offer("xyz", Product("abc"), Instant.now.plus(5, ChronoUnit.DAYS), 2.0f)
+      val offer = Offer("xyz", Product("abc"), Instant.now.plus(1, ChronoUnit.HALF_DAYS).plus(1, ChronoUnit.SECONDS), 2.0f)
       val payload = offer.asJson.toString
       val request = FakeRequest(POST, "/offers").withHeaders(Headers(("Content-Type", "application/json"))).withBody(payload)
 
@@ -47,7 +47,7 @@ class OfferControllerSpec extends WordSpec with Matchers with GuiceOneAppPerTest
     "Call to create an offer with invalid expireDate" in new TestUtils {
 
       val offerId = OfferId(UUID.randomUUID())
-      val offer = Offer("xyz", Product("abc"), Instant.now.minus(1, ChronoUnit.SECONDS), 2.0f)
+      val offer = Offer("xyz", Product("abc"), Instant.now.plus(1, ChronoUnit.HALF_DAYS).minus(1, ChronoUnit.SECONDS), 2.0f)
       val payload = offer.asJson.toString
       val request = FakeRequest(POST, "/offers").withHeaders(Headers(("Content-Type", "application/json"))).withBody(payload)
 
